@@ -20,12 +20,24 @@ struct AddIdeaView: View {
             Form {
                 Section(header: Text("Basic Information")) {
                     TextField("Title", text: $title)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(showingAlert && title.isEmpty ? Color.red : Color.clear, lineWidth: 1)
+                        )
                     TextEditor(text: $description)
                         .frame(height: 100)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(showingAlert && description.isEmpty ? Color.red : Color.clear, lineWidth: 1)
+                        )
                 }
                 
                 Section(header: Text("Location & Time")) {
                     TextField("Location", text: $location)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(showingAlert && location.isEmpty ? Color.red : Color.clear, lineWidth: 1)
+                        )
                     HStack {
                         Text("Duration")
                         Spacer()
@@ -42,6 +54,10 @@ struct AddIdeaView: View {
                 Section(header: Text("Conditions")) {
                     TextEditor(text: $conditions)
                         .frame(height: 80)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(showingAlert && conditions.isEmpty ? Color.red : Color.clear, lineWidth: 1)
+                        )
                 }
                 
                 Section(header: Text("Icon")) {
@@ -60,7 +76,7 @@ struct AddIdeaView: View {
                 }
                 
                 Section {
-                    Button(action: saveIdea) {
+                    Button(action: validateAndSave) {
                         HStack {
                             Spacer()
                             Text("Save Idea")
@@ -68,8 +84,9 @@ struct AddIdeaView: View {
                             Spacer()
                         }
                     }
-                    .listRowBackground(Color.purple)
+                    .listRowBackground(isValidForm ? Color.purple : Color.gray)
                     .foregroundColor(.white)
+                    .disabled(!isValidForm)
                 }
             }
             .navigationTitle("New Idea")
@@ -87,33 +104,24 @@ struct AddIdeaView: View {
         }
     }
     
-    private func saveIdea() {
-        // Validation
-        if title.isEmpty {
-            alertMessage = "Please enter a title"
+    private var isValidForm: Bool {
+        !title.isEmpty && !description.isEmpty && !location.isEmpty && !conditions.isEmpty
+    }
+    
+    private func validateAndSave() {
+        var missingFields: [String] = []
+        
+        if title.isEmpty { missingFields.append("Title") }
+        if description.isEmpty { missingFields.append("Description") }
+        if location.isEmpty { missingFields.append("Location") }
+        if conditions.isEmpty { missingFields.append("Conditions") }
+        
+        if !missingFields.isEmpty {
+            alertMessage = "Please fill in the following required fields:\n" + missingFields.joined(separator: "\n")
             showingAlert = true
             return
         }
         
-        if description.isEmpty {
-            alertMessage = "Please enter a description"
-            showingAlert = true
-            return
-        }
-        
-        if location.isEmpty {
-            alertMessage = "Please enter a location"
-            showingAlert = true
-            return
-        }
-        
-        if conditions.isEmpty {
-            alertMessage = "Please specify conditions"
-            showingAlert = true
-            return
-        }
-        
-        // Create and save the idea
         let idea = Idea(
             title: title,
             description: description,
