@@ -9,7 +9,7 @@ struct PrivacyPolicyView: View {
                     .bold()
                 
                 Group {
-                    Text("Last updated: \(Date().formatted(date: .long, time: .omitted))")
+                    Text("Last updated: \(Date().formatted(.dateTime.day().month().year()))")
                         .foregroundColor(.secondary)
                     
                     Text("Information Collection and Use")
@@ -22,8 +22,15 @@ struct PrivacyPolicyView: View {
                         .font(.subheadline)
                         .bold()
                     Text("While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable information may include, but is not limited to:")
-                    • Your name
-                    • Usage data
+                    
+                    HStack {
+                        Text("•")
+                        Text("Your name")
+                    }
+                    HStack {
+                        Text("•")
+                        Text("Usage data")
+                    }
                     
                     Text("Security")
                         .font(.headline)
