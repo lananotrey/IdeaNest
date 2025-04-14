@@ -9,6 +9,7 @@ struct QuickAddView: View {
     @State private var duration: Double = 60
     @State private var conditions = ""
     @State private var selectedIcon = "lightbulb"
+    @State private var isFavorite = false
     @State private var showingSuccessAlert = false
     @State private var showingValidationAlert = false
     @State private var alertMessage = ""
@@ -69,6 +70,13 @@ struct QuickAddView: View {
                 }
                 
                 Section {
+                    Toggle(isOn: $isFavorite) {
+                        Label("Add to Favorites", systemImage: "star.fill")
+                    }
+                    .tint(.yellow)
+                }
+                
+                Section {
                     Button(action: validateAndSave) {
                         HStack {
                             Spacer()
@@ -120,7 +128,8 @@ struct QuickAddView: View {
             location: location,
             duration: TimeInterval(duration * 60),
             conditions: conditions,
-            icon: selectedIcon
+            icon: selectedIcon,
+            isFavorite: isFavorite
         )
         
         ideaStore.addIdea(idea)
@@ -139,5 +148,6 @@ struct QuickAddView: View {
         duration = 60
         conditions = ""
         selectedIcon = "lightbulb"
+        isFavorite = false
     }
 }

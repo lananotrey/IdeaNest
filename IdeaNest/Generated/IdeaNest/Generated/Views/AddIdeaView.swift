@@ -10,6 +10,7 @@ struct AddIdeaView: View {
     @State private var duration: TimeInterval = 3600 // 1 hour default
     @State private var conditions = ""
     @State private var selectedIcon = "lightbulb"
+    @State private var isFavorite = false
     @State private var showingAlert = false
     @State private var alertMessage = ""
     
@@ -76,6 +77,13 @@ struct AddIdeaView: View {
                 }
                 
                 Section {
+                    Toggle(isOn: $isFavorite) {
+                        Label("Add to Favorites", systemImage: "star.fill")
+                    }
+                    .tint(.yellow)
+                }
+                
+                Section {
                     Button(action: validateAndSave) {
                         HStack {
                             Spacer()
@@ -128,7 +136,8 @@ struct AddIdeaView: View {
             location: location,
             duration: duration,
             conditions: conditions,
-            icon: selectedIcon
+            icon: selectedIcon,
+            isFavorite: isFavorite
         )
         
         ideaStore.addIdea(idea)
