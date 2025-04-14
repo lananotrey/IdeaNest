@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 
 struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
@@ -18,7 +19,7 @@ struct SettingsView: View {
                 }
                 
                 Section("App") {
-                    Link(destination: URL(string: "https://apps.apple.com/app/id6451018837")!) {
+                    Button(action: rateApp) {
                         HStack {
                             Label("Rate App", systemImage: "star.fill")
                             Spacer()
@@ -49,6 +50,11 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .preferredColorScheme(isDarkMode ? .dark : .light)
         }
+    }
+    
+    private func rateApp() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+        SKStoreReviewController.requestReview(in: windowScene)
     }
     
     private func shareApp() {
