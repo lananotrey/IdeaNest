@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E4A762E2CC1937D00F4F7FC /* IdeaNestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4A75F32CC1937D00F4F7FC /* IdeaNestApp.swift */; };
 		8E4A76302CC1937D00F4F7FC /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E4A75F72CC1937D00F4F7FC /* Launch Screen.storyboard */; };
 		8E4A76322CC19D2C00F4F7FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E4A76312CC19D2C00F4F7FC /* GoogleService-Info.plist */; };
 		8E59FB0E2B7D08B8002EFCF9 /* Firebase in Frameworks */ = {isa = PBXBuildFile; productRef = 8E59FB0D2B7D08B8002EFCF9 /* Firebase */; };
@@ -16,7 +15,6 @@
 
 /* Begin PBXFileReference section */
 		8E0CC5CF2B619F6500EC52E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8E4A75F32CC1937D00F4F7FC /* IdeaNestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaNestApp.swift; sourceTree = "<group>"; };
 		8E4A75F72CC1937D00F4F7FC /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		8E4A76312CC19D2C00F4F7FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E538E922D177FBC00CF8EE0 /* IdeaNest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IdeaNest.entitlements; sourceTree = "<group>"; };
@@ -93,7 +91,6 @@
 				8EB2004D2CD2F12500B5001F /* Generated */,
 				8EB200342CD2E45F00B5001F /* Extension */,
 				8E4A75F72CC1937D00F4F7FC /* Launch Screen.storyboard */,
-				8E4A75F32CC1937D00F4F7FC /* IdeaNestApp.swift */,
 			);
 			path = IdeaNest;
 			sourceTree = "<group>";
@@ -178,7 +175,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E4A762E2CC1937D00F4F7FC /* IdeaNestApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
