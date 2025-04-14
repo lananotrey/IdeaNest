@@ -1,17 +1,25 @@
-import Foundation
+import SwiftUI
 
-struct Idea: Identifiable, Codable {
-    var id: UUID
-    var title: String
-    var description: String
-    var isFavorite: Bool
-    var createdDate: Date
+struct ContentView: View {
+    @StateObject private var ideaStore = IdeaStore()
     
-    init(id: UUID = UUID(), title: String, description: String, isFavorite: Bool = false, createdDate: Date = Date()) {
-        self.id = id
-        self.title = title
-        self.description = description
-        self.isFavorite = isFavorite
-        self.createdDate = createdDate
+    var body: some View {
+        TabView {
+            IdeasListView(ideaStore: ideaStore)
+                .tabItem {
+                    Label("Ideas", systemImage: "lightbulb.fill")
+                }
+            
+            FavoritesView(ideaStore: ideaStore)
+                .tabItem {
+                    Label("Favorites", systemImage: "star.fill")
+                }
+            
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
+        }
+        .tint(.purple)
     }
 }
