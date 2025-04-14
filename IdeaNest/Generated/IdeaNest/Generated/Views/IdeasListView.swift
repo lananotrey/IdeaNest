@@ -6,6 +6,7 @@ struct IdeasListView: View {
     @State private var searchText = ""
     @State private var sortOption: SortOption = .dateDesc
     @State private var showingStats = false
+    @State private var showFavoritesOnly = false
     
     enum SortOption {
         case dateDesc, dateAsc, titleAsc, titleDesc
@@ -13,9 +14,13 @@ struct IdeasListView: View {
     
     var filteredAndSortedIdeas: [Idea] {
         let filtered = ideaStore.ideas.filter { idea in
-            searchText.isEmpty || 
-            idea.title.localizedCaseInsensitiveContains(searchText) ||
-            idea.description.localizedCaseInsensitiveContains(searchText)
+            let matchesSearch = searchText.isEmpty || 
+                idea.title.localizedCaseInsensitiveContains(searchText) ||
+                idea.description.localizedCaseInsensitiveContains(searchText)
+            
+            let matchesFavorite = !showFavoritesOnly || idea.isFavorite
+            
+            return matchesSearch && matchesFavorite
         }
         
         return filtered.sorted { first, second in
@@ -37,9 +42,25 @@ struct IdeasListView: View {
             VStack {
                 statisticsBar
                 
+                Picker("Filter", selection: $showFavoritesOnly) {
+                    Text("All Ideas").tag(false)
+                    Text("Favorites").tag(true)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                
                 ZStack {
                     if ideaStore.ideas.isEmpty {
                         EmptyStateView()
+                    } else if filteredAndSortedIdeas.isEmpty {
+                        VStack(spacing: 20) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 40))
+                                .foregroundColor(.gray)
+                            Text("No matching ideas found")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                        }
                     } else {
                         List {
                             ForEach(filteredAndSortedIdeas) { idea in
