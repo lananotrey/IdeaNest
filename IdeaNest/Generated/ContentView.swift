@@ -10,9 +10,9 @@ struct ContentView: View {
                     Label("Ideas", systemImage: "lightbulb.fill")
                 }
             
-            FavoritesView(ideaStore: ideaStore)
+            QuickAddView(ideaStore: ideaStore)
                 .tabItem {
-                    Label("Favorites", systemImage: "star.fill")
+                    Label("Quick Add", systemImage: "plus.circle.fill")
                 }
             
             SettingsView()
