@@ -28,7 +28,7 @@ struct IdeaRowView: View {
             
             Text(idea.createdDate.formatted(date: .abbreviated, time: .shortened))
                 .font(.caption)
-                .foregroundColor(.tertiary)
+                .foregroundColor(.gray.opacity(0.7))
         }
         .padding(.vertical, 4)
         .contentShape(Rectangle())
