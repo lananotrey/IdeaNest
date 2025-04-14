@@ -17,17 +17,11 @@ struct SettingsView: View {
                     }
                 }
                 
-                Section("Legal") {
-                    NavigationLink(destination: PrivacyPolicyView()) {
-                        Label("Privacy Policy", systemImage: "shield.fill")
+                Section("App") {
+                    Button(action: addToFavorites) {
+                        Label("Add to Favorites", systemImage: "star.fill")
                     }
                     
-                    NavigationLink(destination: TermsOfUseView()) {
-                        Label("Terms of Use", systemImage: "doc.text.fill")
-                    }
-                }
-                
-                Section("App") {
                     Link(destination: URL(string: "https://apps.apple.com/app/id6451018837")!) {
                         HStack {
                             Label("Rate App", systemImage: "star.fill")
@@ -39,6 +33,16 @@ struct SettingsView: View {
                     
                     Button(action: shareApp) {
                         Label("Share App", systemImage: "square.and.arrow.up.fill")
+                    }
+                }
+                
+                Section("Legal") {
+                    NavigationLink(destination: PrivacyPolicyView()) {
+                        Label("Privacy Policy", systemImage: "shield.fill")
+                    }
+                    
+                    NavigationLink(destination: TermsOfUseView()) {
+                        Label("Terms of Use", systemImage: "doc.text.fill")
                     }
                 }
                 
@@ -59,6 +63,25 @@ struct SettingsView: View {
            let window = windowScene.windows.first,
            let rootVC = window.rootViewController {
             rootVC.present(activityVC, animated: true)
+        }
+    }
+    
+    private func addToFavorites() {
+        if let url = URL(string: "ideanest://") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        
+        if let shortcutItem = UIApplication.shared.shortcutItems?.first(where: { $0.type == "com.ideanest.quickadd" }) {
+            UIApplication.shared.shortcutItems?.removeAll(where: { $0 == shortcutItem })
+        } else {
+            let shortcut = UIApplicationShortcutItem(
+                type: "com.ideanest.quickadd",
+                localizedTitle: "Quick Add Idea",
+                localizedSubtitle: "Add a new idea quickly",
+                icon: UIApplicationShortcutIcon(systemImageName: "plus.circle.fill"),
+                userInfo: nil
+            )
+            UIApplication.shared.shortcutItems = [shortcut]
         }
     }
 }
