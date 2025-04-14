@@ -28,8 +28,13 @@ struct SettingsView: View {
                 }
                 
                 Section("App") {
-                    Button(action: rateApp) {
-                        Label("Rate App", systemImage: "star.fill")
+                    Link(destination: URL(string: "https://apps.apple.com/app/id6451018837")!) {
+                        HStack {
+                            Label("Rate App", systemImage: "star.fill")
+                            Spacer()
+                            Image(systemName: "arrow.up.forward.app")
+                                .foregroundColor(.secondary)
+                        }
                     }
                     
                     Button(action: shareApp) {
@@ -46,13 +51,8 @@ struct SettingsView: View {
         }
     }
     
-    private func rateApp() {
-        guard let appStoreURL = URL(string: "https://apps.apple.com/app/id123456789") else { return }
-        UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
-    }
-    
     private func shareApp() {
-        let url = URL(string: "https://apps.apple.com/app/id123456789")!
+        let url = URL(string: "https://apps.apple.com/app/id6451018837")!
         let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
