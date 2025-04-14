@@ -1,15 +1,123 @@
 {
-  "chatHistory" : [
-
-  ],
-  "teamId" : "com.IdeaNest.idgr5274",
-  "template" : "AppProject",
-  "id" : "42B065B7-03A5-405B-BC6E-25575CD8313B",
-  "bundleId" : "com.IdeaNest.idgr5274",
-  "lastModified" : 766356302.941518,
   "files" : [
-
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Extensions\/FileManager+Extension.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/ViewModels\/IdeaStore.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Views\/AddIdeaView.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Views\/IdeaRowView.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Views\/IdeasListView.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Views\/FavoritesView.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/ContentView.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Views\/EditIdeaView.swift",
+    "\/Users\/workcar\/Documents\/gen project\/IdeaNest\/IdeaNest\/Generated\/IdeaNest\/Generated\/Views\/SettingsView.swift"
   ],
+  "bundleId" : "com.IdeaNest.idgr5274",
+  "name" : "IdeaNest",
   "location" : "\/Users\/workcar\/Documents\/gen project\/IdeaNest",
-  "name" : "IdeaNest"
+  "template" : "AppProject",
+  "lastModified" : 766356302.941518,
+  "chatHistory" : [
+    {
+      "content" : "You are an advanced AI SwiftUI assistant designed to generates source based on user instructions. \nYour primary objective is to generate the content of the files to be created as code blocks. Each code block should specify whether it's a file.\n\nWhen given a user request, perform the following steps:\n1. Understand the User Request: Carefully interpret what the user wants to create.\n2. Please generate all necessary files for this request.\n3. You create full functioning, complete code files, not just snippets. No approximations or placeholders. FULL WORKING CODE.\n4. YOU MUST ALWAYS RETURN THE COMPLETE FILE CONTENT. NEVER USE PLACEHOLDERS OR SKIP SECTIONS.Don't generate main app scene code with WindowGroup.\nIMPORTANT: Your response must ONLY contain the code blocks with no additional text before or after. Do not use markdown formatting outside of the code blocks. Use the following format for the special comment line. Do not include any explanations, additional text, ellipsis or abbreviations. Don't change any files in Extensions folder.\n\nFormat your response to clearly separate different COMPLETE files, using markers like: \nFILE: file\n<code content>\nEND_FILE\n\nUser request:\n{{userPrompt}}",
+      "role" : "user",
+      "timestamp" : 766356408.023692,
+      "id" : "09F96DE3-9789-4B33-BE72-7AFF79C21FF8"
+    },
+    {
+      "content" : "Напиши приложение на SwiftUI, дизайн должен быть красивым и ярким, которое состоит из трех вкладок таббара и создает минималистичные заметки с возможностью редактирования. \nIdea Nest - это простое приложение для хранения личных проектных идей, концепций хобби или любых творческих идей, которые приходят на ум. Пользователи могут быстро создавать записи с заголовком и короткой заметкой, просматривать все сохраненные идеи в прокручиваемом списке и удалять те, которые больше не актуальны.\n\nIdeaNest идеально подходит для творческих людей, мастериц или всех, кто любит заниматься побочными проектами или хобби, и хранит все ваши мысли в одном надежном месте. Будь то новая поделка своими руками, идея для стартапа или просто интересный план на выходные — запишите его, сохраните и возвращайтесь к нему в любое время.",
+      "role" : "user",
+      "timestamp" : 766356408.023763,
+      "id" : "7B6E37F2-C845-4774-A712-8C08A1113834"
+    },
+    {
+      "content" : "FILE: IdeaNest\/Generated\/ContentView.swift\nimport SwiftUI\n\nstruct ContentView: View {\n    @StateObject private var ideaStore = IdeaStore()\n    \n    var body: some View {\n        TabView {\n            IdeasListView(ideaStore: ideaStore)\n                .tabItem {\n                    Label(\"Ideas\", systemImage: \"lightbulb.fill\")\n                }\n            \n            FavoritesView(ideaStore: ideaStore)\n                .tabItem {\n                    Label(\"Favorites\", systemImage: \"star.fill\")\n                }\n            \n            SettingsView()\n                .tabItem {\n                    Label(\"Settings\", systemImage: \"gear\")\n                }\n        }\n        .tint(.purple)\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Models\/Idea.swift\nimport Foundation\n\nstruct Idea: Identifiable, Codable {\n    var id: UUID\n    var title: String\n    var description: String\n    var isFavorite: Bool\n    var createdDate: Date\n    \n    init(id: UUID = UUID(), title: String, description: String, isFavorite: Bool = false, createdDate: Date = Date()) {\n        self.id = id\n        self.title = title\n        self.description = description\n        self.isFavorite = isFavorite\n        self.createdDate = createdDate\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/ViewModels\/IdeaStore.swift\nimport Foundation\n\n@MainActor\nclass IdeaStore: ObservableObject {\n    @Published var ideas: [Idea] = []\n    \n    private let savePath = FileManager.documentsDirectory.appendingPathComponent(\"SavedIdeas\")\n    \n    init() {\n        loadIdeas()\n    }\n    \n    func addIdea(_ idea: Idea) {\n        ideas.insert(idea, at: 0)\n        save()\n    }\n    \n    func deleteIdea(_ idea: Idea) {\n        if let index = ideas.firstIndex(where: { $0.id == idea.id }) {\n            ideas.remove(at: index)\n            save()\n        }\n    }\n    \n    func updateIdea(_ idea: Idea) {\n        if let index = ideas.firstIndex(where: { $0.id == idea.id }) {\n            ideas[index] = idea\n            save()\n        }\n    }\n    \n    func toggleFavorite(_ idea: Idea) {\n        var updatedIdea = idea\n        updatedIdea.isFavorite.toggle()\n        updateIdea(updatedIdea)\n    }\n    \n    private func loadIdeas() {\n        do {\n            let data = try Data(contentsOf: savePath)\n            ideas = try JSONDecoder().decode([Idea].self, from: data)\n        } catch {\n            ideas = []\n        }\n    }\n    \n    private func save() {\n        do {\n            let data = try JSONEncoder().encode(ideas)\n            try data.write(to: savePath, options: [.atomic, .completeFileProtection])\n        } catch {\n            print(\"Unable to save ideas: \\(error.localizedDescription)\")\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Views\/IdeasListView.swift\nimport SwiftUI\n\nstruct IdeasListView: View {\n    @ObservedObject var ideaStore: IdeaStore\n    @State private var showingAddSheet = false\n    \n    var body: some View {\n        NavigationView {\n            ZStack {\n                if ideaStore.ideas.isEmpty {\n                    EmptyStateView()\n                } else {\n                    List {\n                        ForEach(ideaStore.ideas) { idea in\n                            IdeaRowView(idea: idea, ideaStore: ideaStore)\n                        }\n                        .onDelete { indexSet in\n                            for index in indexSet {\n                                ideaStore.deleteIdea(ideaStore.ideas[index])\n                            }\n                        }\n                    }\n                    .listStyle(.insetGrouped)\n                }\n            }\n            .navigationTitle(\"My Ideas\")\n            .toolbar {\n                Button {\n                    showingAddSheet = true\n                } label: {\n                    Image(systemName: \"plus.circle.fill\")\n                        .font(.title2)\n                }\n            }\n        }\n        .sheet(isPresented: $showingAddSheet) {\n            AddIdeaView(ideaStore: ideaStore)\n        }\n    }\n}\n\nstruct EmptyStateView: View {\n    var body: some View {\n        VStack(spacing: 20) {\n            Image(systemName: \"lightbulb\")\n                .font(.system(size: 60))\n                .foregroundColor(.purple)\n            \n            Text(\"No Ideas Yet\")\n                .font(.title2)\n                .fontWeight(.semibold)\n            \n            Text(\"Add your first idea by tapping the + button\")\n                .foregroundColor(.secondary)\n                .multilineTextAlignment(.center)\n                .padding(.horizontal)\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Views\/IdeaRowView.swift\nimport SwiftUI\n\nstruct IdeaRowView: View {\n    let idea: Idea\n    @ObservedObject var ideaStore: IdeaStore\n    @State private var showingEditSheet = false\n    \n    var body: some View {\n        VStack(alignment: .leading, spacing: 8) {\n            HStack {\n                Text(idea.title)\n                    .font(.headline)\n                \n                Spacer()\n                \n                Button {\n                    ideaStore.toggleFavorite(idea)\n                } label: {\n                    Image(systemName: idea.isFavorite ? \"star.fill\" : \"star\")\n                        .foregroundColor(idea.isFavorite ? .yellow : .gray)\n                }\n            }\n            \n            Text(idea.description)\n                .font(.subheadline)\n                .foregroundColor(.secondary)\n                .lineLimit(2)\n            \n            Text(idea.createdDate.formatted(date: .abbreviated, time: .shortened))\n                .font(.caption)\n                .foregroundColor(.tertiary)\n        }\n        .padding(.vertical, 4)\n        .contentShape(Rectangle())\n        .onTapGesture {\n            showingEditSheet = true\n        }\n        .sheet(isPresented: $showingEditSheet) {\n            EditIdeaView(idea: idea, ideaStore: ideaStore)\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Views\/AddIdeaView.swift\nimport SwiftUI\n\nstruct AddIdeaView: View {\n    @ObservedObject var ideaStore: IdeaStore\n    @Environment(\\.dismiss) var dismiss\n    \n    @State private var title = \"\"\n    @State private var description = \"\"\n    \n    var body: some View {\n        NavigationView {\n            Form {\n                Section {\n                    TextField(\"Title\", text: $title)\n                    TextEditor(text: $description)\n                        .frame(height: 100)\n                }\n                \n                Section {\n                    Button(\"Save Idea\") {\n                        let idea = Idea(title: title, description: description)\n                        ideaStore.addIdea(idea)\n                        dismiss()\n                    }\n                    .frame(maxWidth: .infinity)\n                    .disabled(title.isEmpty)\n                }\n            }\n            .navigationTitle(\"New Idea\")\n            .navigationBarTitleDisplayMode(.inline)\n            .toolbar {\n                Button(\"Cancel\") {\n                    dismiss()\n                }\n            }\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Views\/EditIdeaView.swift\nimport SwiftUI\n\nstruct EditIdeaView: View {\n    let idea: Idea\n    @ObservedObject var ideaStore: IdeaStore\n    @Environment(\\.dismiss) var dismiss\n    \n    @State private var title: String\n    @State private var description: String\n    \n    init(idea: Idea, ideaStore: IdeaStore) {\n        self.idea = idea\n        self.ideaStore = ideaStore\n        _title = State(initialValue: idea.title)\n        _description = State(initialValue: idea.description)\n    }\n    \n    var body: some View {\n        NavigationView {\n            Form {\n                Section {\n                    TextField(\"Title\", text: $title)\n                    TextEditor(text: $description)\n                        .frame(height: 100)\n                }\n                \n                Section {\n                    Button(\"Save Changes\") {\n                        let updatedIdea = Idea(id: idea.id,\n                                             title: title,\n                                             description: description,\n                                             isFavorite: idea.isFavorite,\n                                             createdDate: idea.createdDate)\n                        ideaStore.updateIdea(updatedIdea)\n                        dismiss()\n                    }\n                    .frame(maxWidth: .infinity)\n                    .disabled(title.isEmpty)\n                }\n            }\n            .navigationTitle(\"Edit Idea\")\n            .navigationBarTitleDisplayMode(.inline)\n            .toolbar {\n                Button(\"Cancel\") {\n                    dismiss()\n                }\n            }\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Views\/FavoritesView.swift\nimport SwiftUI\n\nstruct FavoritesView: View {\n    @ObservedObject var ideaStore: IdeaStore\n    \n    var favoriteIdeas: [Idea] {\n        ideaStore.ideas.filter { $0.isFavorite }\n    }\n    \n    var body: some View {\n        NavigationView {\n            ZStack {\n                if favoriteIdeas.isEmpty {\n                    VStack(spacing: 20) {\n                        Image(systemName: \"star.fill\")\n                            .font(.system(size: 60))\n                            .foregroundColor(.yellow)\n                        \n                        Text(\"No Favorites Yet\")\n                            .font(.title2)\n                            .fontWeight(.semibold)\n                        \n                        Text(\"Mark your favorite ideas with a star\")\n                            .foregroundColor(.secondary)\n                            .multilineTextAlignment(.center)\n                            .padding(.horizontal)\n                    }\n                } else {\n                    List {\n                        ForEach(favoriteIdeas) { idea in\n                            IdeaRowView(idea: idea, ideaStore: ideaStore)\n                        }\n                    }\n                    .listStyle(.insetGrouped)\n                }\n            }\n            .navigationTitle(\"Favorites\")\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Views\/SettingsView.swift\nimport SwiftUI\n\nstruct SettingsView: View {\n    @AppStorage(\"username\") private var username = \"\"\n    @Environment(\\.colorScheme) var colorScheme\n    \n    var body: some View {\n        NavigationView {\n            Form {\n                Section(\"Profile\") {\n                    TextField(\"Your Name\", text: $username)\n                }\n                \n                Section(\"About\") {\n                    LabeledContent(\"Version\", value: \"1.0.0\")\n                    Link(destination: URL(string: \"https:\/\/www.example.com\/privacy\")!) {\n                        Text(\"Privacy Policy\")\n                    }\n                    Link(destination: URL(string: \"https:\/\/www.example.com\/terms\")!) {\n                        Text(\"Terms of Use\")\n                    }\n                }\n                \n                Section {\n                    Button(\"Rate App\") {\n                        if let url = URL(string: \"itms-apps:\/\/apple.com\/app\/id123456789\") {\n                            UIApplication.shared.open(url)\n                        }\n                    }\n                    \n                    Button(\"Share App\") {\n                        let url = URL(string: \"https:\/\/apps.apple.com\/app\/id123456789\")!\n                        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)\n                        \n                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,\n                           let window = windowScene.windows.first,\n                           let rootVC = window.rootViewController {\n                            rootVC.present(activityVC, animated: true)\n                        }\n                    }\n                }\n            }\n            .navigationTitle(\"Settings\")\n        }\n    }\n}\nEND_FILE\n\nFILE: IdeaNest\/Generated\/Extensions\/FileManager+Extension.swift\nimport Foundation\n\nextension FileManager {\n    static var documentsDirectory: URL {\n        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)\n        return paths[0]\n    }\n}\nEND_FILE",
+      "role" : "assistant",
+      "timestamp" : 766356444.005314,
+      "fileChanges" : [
+        {
+          "type" : "added",
+          "path" : "IdeasListView.swift",
+          "changes" : {
+            "addedLines" : 59,
+            "removedLines" : 0
+          },
+          "id" : "0E82BD7A-C18F-4B8F-9406-0E21EA1CBC11"
+        },
+        {
+          "type" : "modified",
+          "changes" : {
+            "addedLines" : 4,
+            "removedLines" : 0
+          },
+          "path" : "ContentView.swift",
+          "id" : "953E6F6D-BFC9-4514-B76F-D1217FA95468"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "removedLines" : 0,
+            "addedLines" : 50
+          },
+          "path" : "EditIdeaView.swift",
+          "id" : "21DCD71D-B929-4EA7-A262-80B4E42B53BA"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "addedLines" : 55,
+            "removedLines" : 0
+          },
+          "path" : "IdeaStore.swift",
+          "id" : "35B734FB-ED8F-4AF0-B8B9-62317BB412D2"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "addedLines" : 42,
+            "removedLines" : 0
+          },
+          "path" : "IdeaRowView.swift",
+          "id" : "91F750BC-32DF-485F-A0D3-F450FE252A1D"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "addedLines" : 40,
+            "removedLines" : 0
+          },
+          "path" : "FavoritesView.swift",
+          "id" : "050FCCDD-1814-4BCE-A238-DFC1BD962410"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "removedLines" : 0,
+            "addedLines" : 8
+          },
+          "path" : "FileManager+Extension.swift",
+          "id" : "9F141482-F17D-4140-B62B-ED58923C2D5A"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "addedLines" : 46,
+            "removedLines" : 0
+          },
+          "path" : "SettingsView.swift",
+          "id" : "87B36F5A-0819-47D1-BF65-9D6F9B3D245E"
+        },
+        {
+          "type" : "added",
+          "changes" : {
+            "addedLines" : 38,
+            "removedLines" : 0
+          },
+          "path" : "AddIdeaView.swift",
+          "id" : "2B5C6C94-13AF-43D6-B62D-FBD58F39F1EA"
+        }
+      ],
+      "id" : "635EC8E8-C024-436E-B79E-D69EEFFBC573"
+    }
+  ],
+  "id" : "42B065B7-03A5-405B-BC6E-25575CD8313B",
+  "teamId" : "com.IdeaNest.idgr5274"
 }
