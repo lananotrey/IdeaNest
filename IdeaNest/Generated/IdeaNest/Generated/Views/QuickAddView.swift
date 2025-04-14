@@ -2,14 +2,14 @@ import SwiftUI
 
 struct QuickAddView: View {
     @ObservedObject var ideaStore: IdeaStore
+    @Binding var selectedTab: Int
     @State private var title = ""
     @State private var description = ""
     @State private var location = ""
-    @State private var duration: TimeInterval = 3600 // 1 hour default
+    @State private var duration: Double = 60
     @State private var conditions = ""
     @State private var selectedIcon = "lightbulb"
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
+    @State private var showingSuccessAlert = false
     
     let icons = ["lightbulb", "star", "heart", "flag", "bookmark", "tag", "paperclip", "link", "clock", "calendar"]
     
@@ -24,16 +24,9 @@ struct QuickAddView: View {
                 
                 Section(header: Text("Location & Time")) {
                     TextField("Location", text: $location)
-                    HStack {
-                        Text("Duration")
-                        Spacer()
-                        Picker("Duration", selection: $duration) {
-                            Text("30 min").tag(TimeInterval(1800))
-                            Text("1 hour").tag(TimeInterval(3600))
-                            Text("2 hours").tag(TimeInterval(7200))
-                            Text("4 hours").tag(TimeInterval(14400))
-                            Text("8 hours").tag(TimeInterval(28800))
-                        }
+                    VStack(alignment: .leading) {
+                        Text("Duration (minutes): \(Int(duration))")
+                        Slider(value: $duration, in: 5...480, step: 5)
                     }
                 }
                 
@@ -68,60 +61,46 @@ struct QuickAddView: View {
                     }
                     .listRowBackground(Color.purple)
                     .foregroundColor(.white)
+                    .disabled(!isValidForm)
                 }
             }
             .navigationTitle("Quick Add")
-            .alert("Missing Information", isPresented: $showingAlert) {
-                Button("OK", role: .cancel) { }
+            .alert("Success!", isPresented: $showingSuccessAlert) {
+                Button("OK") { }
             } message: {
-                Text(alertMessage)
+                Text("Your idea has been saved successfully!")
             }
         }
     }
     
+    private var isValidForm: Bool {
+        !title.isEmpty && !description.isEmpty && !location.isEmpty && !conditions.isEmpty
+    }
+    
     private func saveIdea() {
-        // Validation
-        if title.isEmpty {
-            alertMessage = "Please enter a title"
-            showingAlert = true
-            return
-        }
-        
-        if description.isEmpty {
-            alertMessage = "Please enter a description"
-            showingAlert = true
-            return
-        }
-        
-        if location.isEmpty {
-            alertMessage = "Please enter a location"
-            showingAlert = true
-            return
-        }
-        
-        if conditions.isEmpty {
-            alertMessage = "Please specify conditions"
-            showingAlert = true
-            return
-        }
-        
-        // Create and save the idea
         let idea = Idea(
             title: title,
             description: description,
             location: location,
-            duration: duration,
+            duration: TimeInterval(duration * 60),
             conditions: conditions,
             icon: selectedIcon
         )
         
         ideaStore.addIdea(idea)
+        resetForm()
+        showingSuccessAlert = true
         
-        // Reset form
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            selectedTab = 0
+        }
+    }
+    
+    private func resetForm() {
         title = ""
         description = ""
         location = ""
-        duration = 3600
+        duration = 60
         conditions = ""
         selectedIcon = "lightbulb"
     }
