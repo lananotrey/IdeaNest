@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var ideaStore = IdeaStore()
+    @AppStorage("isDarkMode") private var isDarkMode = false
     
     var body: some View {
         TabView {
@@ -21,5 +22,6 @@ struct ContentView: View {
                 }
         }
         .tint(.purple)
+        .preferredColorScheme(isDarkMode ? .dark : .light)
     }
 }
