@@ -42,10 +42,6 @@ struct SettingsView: View {
                         Label("Terms of Use", systemImage: "doc.text.fill")
                     }
                 }
-                
-                Section("About") {
-                    LabeledContent("Version", value: "1.0.0")
-                }
             }
             .navigationTitle("Settings")
             .preferredColorScheme(isDarkMode ? .dark : .light)

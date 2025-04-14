@@ -20,6 +20,7 @@ struct RemoteScreen: View {
     private var mainContent: some View {
         Group {
             if remoteViewModel.currentState == .main {
+                ContentView()
             } else {
                 serviceContent
             }
