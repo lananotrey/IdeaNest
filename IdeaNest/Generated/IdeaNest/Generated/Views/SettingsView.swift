@@ -18,10 +18,6 @@ struct SettingsView: View {
                 }
                 
                 Section("App") {
-                    Button(action: addToFavorites) {
-                        Label("Add to Favorites", systemImage: "star.fill")
-                    }
-                    
                     Link(destination: URL(string: "https://apps.apple.com/app/id6451018837")!) {
                         HStack {
                             Label("Rate App", systemImage: "star.fill")
@@ -63,25 +59,6 @@ struct SettingsView: View {
            let window = windowScene.windows.first,
            let rootVC = window.rootViewController {
             rootVC.present(activityVC, animated: true)
-        }
-    }
-    
-    private func addToFavorites() {
-        if let url = URL(string: "ideanest://") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-        
-        if let shortcutItem = UIApplication.shared.shortcutItems?.first(where: { $0.type == "com.ideanest.quickadd" }) {
-            UIApplication.shared.shortcutItems?.removeAll(where: { $0 == shortcutItem })
-        } else {
-            let shortcut = UIApplicationShortcutItem(
-                type: "com.ideanest.quickadd",
-                localizedTitle: "Quick Add Idea",
-                localizedSubtitle: "Add a new idea quickly",
-                icon: UIApplicationShortcutIcon(systemImageName: "plus.circle.fill"),
-                userInfo: nil
-            )
-            UIApplication.shared.shortcutItems = [shortcut]
         }
     }
 }
