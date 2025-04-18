@@ -3,6 +3,7 @@ import SwiftUI
 struct AddIdeaView: View {
     @ObservedObject var ideaStore: IdeaStore
     @Environment(\.dismiss) var dismiss
+    @Binding var selectedTab: Int
     
     @State private var title = ""
     @State private var description = ""
@@ -12,7 +13,7 @@ struct AddIdeaView: View {
     @State private var selectedIcon = "lightbulb"
     @State private var isFavorite = false
     @State private var showingAlert = false
-    @State private var showingSuccessAlert = false
+    @State private var showingSuccessToast = false
     
     let icons = ["lightbulb", "star", "heart", "flag", "bookmark", "tag", "paperclip", "link", "clock", "calendar"]
     
@@ -109,13 +110,11 @@ struct AddIdeaView: View {
             } message: {
                 Text(alertMessage)
             }
-            .alert("Success!", isPresented: $showingSuccessAlert) {
-                Button("OK") {
-                    resetForm()
-                    dismiss()
+            .overlay {
+                if showingSuccessToast {
+                    ToastView(message: "Idea saved successfully!")
+                        .transition(.move(edge: .top))
                 }
-            } message: {
-                Text("Your idea has been saved successfully!")
             }
         }
     }
@@ -152,16 +151,20 @@ struct AddIdeaView: View {
         )
         
         ideaStore.addIdea(idea)
-        showingSuccessAlert = true
+        showSuccessAndDismiss()
     }
     
-    private func resetForm() {
-        title = ""
-        description = ""
-        location = ""
-        duration = 3600
-        conditions = ""
-        selectedIcon = "lightbulb"
-        isFavorite = false
+    private func showSuccessAndDismiss() {
+        withAnimation {
+            showingSuccessToast = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            withAnimation {
+                showingSuccessToast = false
+                selectedTab = 0
+                dismiss()
+            }
+        }
     }
 }
