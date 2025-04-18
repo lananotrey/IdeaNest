@@ -49,8 +49,8 @@ struct SettingsView: View {
     }
     
     private func rateApp() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        SKStoreReviewController.requestReview(in: windowScene)
+        guard let appStoreURL = URL(string: "https://apps.apple.com/app/id6451018837") else { return }
+        UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
     }
     
     private func shareApp() {
