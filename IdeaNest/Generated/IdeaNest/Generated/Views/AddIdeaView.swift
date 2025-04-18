@@ -7,12 +7,12 @@ struct AddIdeaView: View {
     @State private var title = ""
     @State private var description = ""
     @State private var location = ""
-    @State private var duration: TimeInterval = 3600 // 1 hour default
+    @State private var duration: TimeInterval = 3600
     @State private var conditions = ""
     @State private var selectedIcon = "lightbulb"
     @State private var isFavorite = false
     @State private var showingAlert = false
-    @State private var alertMessage = ""
+    @State private var showingSuccessAlert = false
     
     let icons = ["lightbulb", "star", "heart", "flag", "bookmark", "tag", "paperclip", "link", "clock", "calendar"]
     
@@ -109,6 +109,14 @@ struct AddIdeaView: View {
             } message: {
                 Text(alertMessage)
             }
+            .alert("Success!", isPresented: $showingSuccessAlert) {
+                Button("OK") {
+                    resetForm()
+                    dismiss()
+                }
+            } message: {
+                Text("Your idea has been saved successfully!")
+            }
         }
     }
     
@@ -116,7 +124,7 @@ struct AddIdeaView: View {
         !title.isEmpty && !description.isEmpty && !location.isEmpty && !conditions.isEmpty
     }
     
-    private func validateAndSave() {
+    private var alertMessage: String {
         var missingFields: [String] = []
         
         if title.isEmpty { missingFields.append("Title") }
@@ -124,8 +132,11 @@ struct AddIdeaView: View {
         if location.isEmpty { missingFields.append("Location") }
         if conditions.isEmpty { missingFields.append("Conditions") }
         
-        if !missingFields.isEmpty {
-            alertMessage = "Please fill in the following required fields:\n" + missingFields.joined(separator: "\n")
+        return "Please fill in the following required fields:\n" + missingFields.joined(separator: "\n")
+    }
+    
+    private func validateAndSave() {
+        if !isValidForm {
             showingAlert = true
             return
         }
@@ -141,6 +152,16 @@ struct AddIdeaView: View {
         )
         
         ideaStore.addIdea(idea)
-        dismiss()
+        showingSuccessAlert = true
+    }
+    
+    private func resetForm() {
+        title = ""
+        description = ""
+        location = ""
+        duration = 3600
+        conditions = ""
+        selectedIcon = "lightbulb"
+        isFavorite = false
     }
 }
