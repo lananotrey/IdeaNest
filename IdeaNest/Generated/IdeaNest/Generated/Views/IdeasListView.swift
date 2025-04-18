@@ -7,6 +7,7 @@ struct IdeasListView: View {
     @State private var sortOption: SortOption = .dateDesc
     @State private var showingStats = false
     @State private var showFavoritesOnly = false
+    @State private var selectedTab = 0
     
     enum SortOption {
         case dateDesc, dateAsc, titleAsc, titleDesc
@@ -79,7 +80,7 @@ struct IdeasListView: View {
             .searchable(text: $searchText, prompt: "Search ideas...")
             .navigationTitle("My Ideas")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
                     Menu {
                         Picker("Sort by", selection: $sortOption) {
                             Text("Newest First").tag(SortOption.dateDesc)
@@ -92,7 +93,7 @@ struct IdeasListView: View {
                     }
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
                         showingAddSheet = true
                     } label: {
@@ -103,7 +104,7 @@ struct IdeasListView: View {
             }
         }
         .sheet(isPresented: $showingAddSheet) {
-            AddIdeaView(ideaStore: ideaStore)
+            AddIdeaView(ideaStore: ideaStore, selectedTab: $selectedTab)
         }
         .sheet(isPresented: $showingStats) {
             StatisticsView(ideaStore: ideaStore)
