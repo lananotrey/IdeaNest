@@ -40,16 +40,12 @@ struct AddIdeaView: View {
                             RoundedRectangle(cornerRadius: 4)
                                 .stroke(showingAlert && location.isEmpty ? Color.red : Color.clear, lineWidth: 1)
                         )
-                    HStack {
-                        Text("Duration")
-                        Spacer()
-                        Picker("Duration", selection: $duration) {
-                            Text("30 min").tag(TimeInterval(1800))
-                            Text("1 hour").tag(TimeInterval(3600))
-                            Text("2 hours").tag(TimeInterval(7200))
-                            Text("4 hours").tag(TimeInterval(14400))
-                            Text("8 hours").tag(TimeInterval(28800))
-                        }
+                    Picker("Duration", selection: $duration) {
+                        Text("30 min").tag(TimeInterval(1800))
+                        Text("1 hour").tag(TimeInterval(3600))
+                        Text("2 hours").tag(TimeInterval(7200))
+                        Text("4 hours").tag(TimeInterval(14400))
+                        Text("8 hours").tag(TimeInterval(28800))
                     }
                 }
                 
