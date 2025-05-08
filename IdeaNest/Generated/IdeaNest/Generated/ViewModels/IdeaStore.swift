@@ -1,8 +1,10 @@
 import Foundation
+import SwiftUI
 
 @MainActor
 class IdeaStore: ObservableObject {
     @Published var ideas: [Idea] = []
+    @Published var selectedTab = 0
     
     private let savePath = FileManager.documentsDirectory.appendingPathComponent("SavedIdeas")
     
@@ -19,6 +21,8 @@ class IdeaStore: ObservableObject {
         if let index = ideas.firstIndex(where: { $0.id == idea.id }) {
             ideas.remove(at: index)
             save()
+            ToastManager.shared.show(message: "Idea deleted successfully")
+            selectedTab = 0
         }
     }
     
@@ -26,6 +30,8 @@ class IdeaStore: ObservableObject {
         if let index = ideas.firstIndex(where: { $0.id == idea.id }) {
             ideas[index] = idea
             save()
+            ToastManager.shared.show(message: "Idea updated successfully")
+            selectedTab = 0
         }
     }
     

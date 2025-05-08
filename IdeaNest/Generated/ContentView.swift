@@ -5,18 +5,17 @@ struct ContentView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var showOnboarding = false
-    @State private var selectedTab = 0
     
     var body: some View {
         ZStack {
-            TabView(selection: $selectedTab) {
+            TabView(selection: $ideaStore.selectedTab) {
                 IdeasListView(ideaStore: ideaStore)
                     .tabItem {
                         Label("Ideas", systemImage: "lightbulb.fill")
                     }
                     .tag(0)
                 
-                QuickAddView(ideaStore: ideaStore, selectedTab: $selectedTab)
+                QuickAddView(ideaStore: ideaStore, selectedTab: $ideaStore.selectedTab)
                     .tabItem {
                         Label("Quick Add", systemImage: "plus.circle.fill")
                     }
@@ -34,6 +33,8 @@ struct ContentView: View {
             if showOnboarding {
                 OnboardingView(showOnboarding: $showOnboarding)
             }
+            
+            ToastOverlayView()
         }
         .onAppear {
             if !hasSeenOnboarding {
