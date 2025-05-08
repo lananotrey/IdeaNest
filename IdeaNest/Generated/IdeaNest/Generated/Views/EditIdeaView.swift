@@ -11,6 +11,7 @@ struct EditIdeaView: View {
     @State private var duration: TimeInterval
     @State private var conditions: String
     @State private var selectedIcon: String
+    @State private var isFavorite: Bool
     
     init(idea: Idea, ideaStore: IdeaStore) {
         self.idea = idea
@@ -21,6 +22,7 @@ struct EditIdeaView: View {
         _duration = State(initialValue: idea.duration)
         _conditions = State(initialValue: idea.conditions)
         _selectedIcon = State(initialValue: idea.icon)
+        _isFavorite = State(initialValue: idea.isFavorite)
     }
     
     let icons = ["lightbulb", "star", "heart", "flag", "bookmark", "tag", "paperclip", "link", "clock", "calendar"]
@@ -54,6 +56,13 @@ struct EditIdeaView: View {
                         .frame(height: 80)
                 }
                 
+                Section(header: Text("Favorite")) {
+                    Toggle(isOn: $isFavorite) {
+                        Label("Mark as Favorite", systemImage: isFavorite ? "star.fill" : "star")
+                            .foregroundColor(isFavorite ? .yellow : .primary)
+                    }
+                }
+                
                 Section(header: Text("Icon")) {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5)) {
                         ForEach(icons, id: \.self) { icon in
@@ -79,7 +88,7 @@ struct EditIdeaView: View {
                             duration: duration,
                             conditions: conditions,
                             icon: selectedIcon,
-                            isFavorite: idea.isFavorite,
+                            isFavorite: isFavorite,
                             createdDate: idea.createdDate
                         )
                         ideaStore.updateIdea(updatedIdea)

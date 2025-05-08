@@ -23,6 +23,7 @@
 		8E538E922D177FBC00CF8EE0 /* IdeaNest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IdeaNest.entitlements; sourceTree = "<group>"; };
 		8EAB576F2C40226900A542D5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8EFC1E472B554FD5005637B3 /* IdeaNest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IdeaNest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F285CCAB2DB6D94D00A18CC9 /* IdeaNest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = IdeaNest.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -91,6 +92,11 @@
 			path = IdeaNest;
 			sourceTree = "<group>";
 		};
+		F285CCAC2DB6D94D00A18CC9 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -150,6 +156,12 @@
 			);
 			productRefGroup = 8EFC1E482B554FD5005637B3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F285CCAC2DB6D94D00A18CC9 /* Products */;
+					ProjectRef = F285CCAB2DB6D94D00A18CC9 /* IdeaNest.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8EFC1E462B554FD5005637B3 /* IdeaNest */,
